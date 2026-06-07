@@ -18,7 +18,7 @@ def create(json_data):
     + goi_y_so_hoa: Gợi ý các điểm cần chú ý khi số hóa 3D loại không gian này
     """
     result = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o", ## gpt-40-mini nếu key free
         response_format={"type": "json_object"},
         messages=[
             {"role": "user", "content": prompt}
