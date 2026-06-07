@@ -18,7 +18,7 @@ Tạo file `.env` trong thư mục gốc dự án:
 ```env
 OPENAI_API_KEY= "API key"
 ```
-*** Nếu không có key OpenAI pro hãy đổi model gpt sang model miễn phí
+*** Nếu không có key OpenAI pro hãy đổi model gpt sang model gpt-4o-mini miễn phí
 
 > Lấy API key tại: https://platform.openai.com/api-keys
 
