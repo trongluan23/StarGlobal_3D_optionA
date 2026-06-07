@@ -1,0 +1,12 @@
+**/__pycache__/
+*.db
+.vscode/
+**/*.pyc
+**/*.png
+**/*.jpg
+**/*.ipynb
+**/*.env
+**/key.py
+**/output*
+**/*.csv
+**/*.log
