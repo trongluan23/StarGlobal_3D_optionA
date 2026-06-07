@@ -1,8 +1,44 @@
 
+// Validation functions
+function validateInput(formData) {
+    const errors = [];
+    
+    // Validate name
+    if (!formData.name || formData.name.trim() === '') {
+        errors.push('Tên dự án không được để trống');
+    } else if (formData.name.length > 100) {
+        errors.push('Tên dự án không được vượt quá 100 ký tự');
+    }
+    
+    // Validate loaiKG
+    if (!formData.loaiKG || formData.loaiKG.trim() === '') {
+        errors.push('Loại không gian không được để trống');
+    } else if (formData.loaiKG.length > 100) {
+        errors.push('Loại không gian không được vượt quá 100 ký tự');
+    }
+    
+    // Validate moTa (optional but has max length)
+    if (formData.moTa && formData.moTa.length > 200) {
+        errors.push('Mô tả không được vượt quá 200 ký tự');
+    }
+    
+    // Validate nhomKH (optional but has max length)
+    if (formData.nhomKH && formData.nhomKH.length > 100) {
+        errors.push('Nhóm khách hàng không được vượt quá 100 ký tự');
+    }
+    
+    return errors;
+}
+
+function showValidationErrors(errors) {
+    const errorMessage = errors.join('\n');
+    alert('❌ Lỗi validation:\n\n' + errorMessage);
+}
+
 document.getElementById('projectForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    
+    // Get form data
     const formData = {
         name: document.getElementById('projectName').value,
         loaiKG: document.getElementById('spaceType').value,
@@ -10,6 +46,11 @@ document.getElementById('projectForm').addEventListener('submit', async function
         nhomKH: document.getElementById('targetCustomer').value
     };
     
+    const validationErrors = validateInput(formData);
+    if (validationErrors.length > 0) {
+        showValidationErrors(validationErrors);
+        return; // Stop submission
+    }
 
     document.getElementById('loadingSpinner').classList.add('show');
     document.getElementById('resultSection').classList.remove('show');
@@ -24,16 +65,18 @@ document.getElementById('projectForm').addEventListener('submit', async function
             body: JSON.stringify(formData)
         });
         
+        const result = await response.json();
+        
         if (!response.ok) {
-            throw new Error('Có lỗi xảy ra khi tạo nội dung');
+           
+            throw new Error(result.message || 'Có lỗi xảy ra khi tạo nội dung');
         }
         
-        const result = await response.json();
         displayResults(result);
         
     } catch (error) {
         console.error('Error:', error);
-        alert('Có lỗi xảy ra: ' + error.message);
+        alert('❌ ' + error.message);
     } finally {
         document.getElementById('loadingSpinner').classList.remove('show');
     }
@@ -106,7 +149,11 @@ ${suggestions}
     `.trim();
     
     navigator.clipboard.writeText(fullText).then(() => {
-        const btn = event.target;
+        // Find the button that was clicked
+        const buttons = document.querySelectorAll('.btn-outline-primary');
+        const btn = Array.from(buttons).find(b => b.textContent.includes('Sao chép'));
+        if (!btn) return;
+        
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-check"></i> Đã sao chép!';
         btn.classList.remove('btn-outline-primary');
@@ -165,3 +212,41 @@ document.getElementById('projectForm').addEventListener('submit', async function
     displayResults(demoData);
 });
 */
+
+
+// Real-time character counter
+function setupCharacterCounters() {
+    const fields = [
+        { id: 'projectName', max: 100, counterId: 'nameCounter' },
+        { id: 'spaceType', max: 100, counterId: 'typeCounter' },
+        { id: 'description', max: 200, counterId: 'descCounter' },
+        { id: 'targetCustomer', max: 100, counterId: 'customerCounter' }
+    ];
+    
+    fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const counter = document.getElementById(field.counterId);
+        
+        if (input && counter) {
+            input.addEventListener('input', function() {
+                const length = this.value.length;
+                const remaining = field.max - length;
+                counter.textContent = `${length}/${field.max}`;
+                
+                // Change color based on remaining characters
+                if (remaining < 10) {
+                    counter.style.color = '#dc3545'; // Red
+                } else if (remaining < 30) {
+                    counter.style.color = '#ffc107'; // Yellow
+                } else {
+                    counter.style.color = '#6c757d'; // Gray
+                }
+            });
+        }
+    });
+}
+
+// Initialize character counters when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setupCharacterCounters();
+});

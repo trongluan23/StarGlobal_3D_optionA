@@ -92,6 +92,13 @@
         color: #666;
         margin-bottom: 30px;
       }
+      .form-text {
+        font-size: 0.875rem;
+      }
+      .form-text span {
+        font-weight: 600;
+        transition: color 0.3s;
+      }
     </style>
   </head>
   <body>
@@ -114,8 +121,13 @@
               name="name"
               class="form-control form-control-lg"
               id="projectName"
+              placeholder="VD: Căn hộ Vinhomes Ocean Park"
               required
+              maxlength="100"
             />
+            <div class="form-text">
+              <span id="nameCounter">0/100</span> ký tự
+            </div>
           </div>
 
           <div class="mb-4">
@@ -127,8 +139,13 @@
               name="loaiKG"
               class="form-control form-control-lg"
               id="spaceType"
+              placeholder="VD: Căn hộ cao cấp, Văn phòng, Showroom..."
               required
+              maxlength="100"
             />
+            <div class="form-text">
+              <span id="typeCounter">0/100</span> ký tự
+            </div>
           </div>
 
           <div class="mb-4">
@@ -141,7 +158,11 @@
               id="description"
               rows="4"
               placeholder="Mô tả chi tiết về dự án, mục đích sử dụng..."
+              maxlength="200"
             ></textarea>
+            <div class="form-text">
+              <span id="descCounter">0/200</span> ký tự
+            </div>
           </div>
 
           <div class="mb-4">
@@ -152,8 +173,12 @@
               type="text"
               class="form-control form-control-lg"
               id="targetCustomer"
-              placeholder=""
+              placeholder="VD: Gia đình trẻ, Doanh nghiệp, Nhà đầu tư..."
+              maxlength="100"
             />
+            <div class="form-text">
+              <span id="customerCounter">0/100</span> ký tự
+            </div>
           </div>
 
           <div class="text-center">
