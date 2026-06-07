@@ -34,9 +34,6 @@
 
 ### 1. Clone hoặc tải dự án về
 
-```bash
-cd TEST
-```
 
 ### 2. Cài đặt thư viện Python
 
